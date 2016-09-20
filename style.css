@@ -42,6 +42,10 @@ td, th {
   border: 1px solid #000 !important;
   font-size: 14px;
 }
+.thead-inverse tr th {
+  color: #fff;
+  background: #373A3C;
+}
 tr {
   background: #fff;
 }

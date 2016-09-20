@@ -22,6 +22,7 @@ if (isset($_POST['submit'])) {
 <html>
   <head>
     <meta charset="utf-8" />
+    <link rel="stylesheet" type="text/css" href="libs/bootstrap-3.3.7-dist/css/bootstrap.min.css">
     <link rel="stylesheet" type="text/css" href="style.css" />
     <title>DFA Simulator</title>
   </head>
