@@ -4,7 +4,7 @@ require_once("DFA.php");
 
 if (isset($_POST['submit'])) {
   $_SESSION['states'] = file_get_contents($_FILES['inputFile']['tmp_name']);
-  
+
   $objDFA = new DFA;
   $objDFA->getFromFile($_FILES['inputFile']['tmp_name']);
   //echo $objDFA->getStateSequence("011");
@@ -18,12 +18,10 @@ if (isset($_POST['submit'])) {
   */
 }
 ?>
-
 <!DOCTYPE html>
 <html>
   <head>
     <meta charset="utf-8" />
-    <link rel="stylesheet" type="text/css" href="bootstrap.css" />
     <link rel="stylesheet" type="text/css" href="style.css" />
     <title>DFA Simulator</title>
   </head>
@@ -55,7 +53,7 @@ if (isset($_POST['submit'])) {
           ?>
         </tbody>
       </table>
-      
+
       <form id="formInputString">
         <div class="input-group">
           <span class="input-group-addon" id="basic-addon3">Input string</span>
@@ -65,49 +63,51 @@ if (isset($_POST['submit'])) {
           Type the input string on the textbox above
         </div>
       </form>
-      
     </div>
-    
-    <script type="text/javascript" src="jquery-1.7.2.min.js"></script>
-    <script type="text/javascript">
-      <?php
-      if (isset($_POST['submit'])) {
-        echo '$("table").show();';
-        echo '$("#fName").html("File <strong>' . $_FILES['inputFile']['name'] . '</strong> successfully loaded with the following data");';
-        echo '$("#fName").show();';
-        echo '$("#formInputString").show();';
-        echo '$("#outputDFA").show();';
-      } else {
-        echo '$("table").hide();';
-        echo '$("#fName").hide();';
-        echo '$("#formInputString").hide();';
-        echo '$("#outputDFA").hide();';
-      }
-      ?>
-      
-      jQuery('#inputString').on('input', function() {
-        $(this).val($(this).val().replace(/[^0-1]/g,'') );
-        
-        $.ajax({
-          type	   : 'get',
-          url		   : 'act_ajax.php',
-          data     : 'input=' + $('#inputString').val(),
-          dataType : 'json',
-          success	 : function(response) {
-            var output = $('#outputDFA');
-            
-            output.html("<strong>" + response['output'] + "</strong>");
-            output.show();
-            $('tr').removeClass('cur_state');
-            $('#s' + response['cur_state']).addClass('cur_state');
-        
-            if ($('#inputString').val().length == 0)
-              output.html('Type the input string on the textbox above');
-            else {
-              var sequence = "<br />Sequences: " + response['sequence'];
-              output.append(sequence);
-            }
-          }
+
+    <script src="libs/jquery-3.1.0.min.js"></script>
+    <script src="libs/bootstrap-3.3.7-dist/js/bootstrap.min.js"></script>
+    <script>
+      $(function(){
+        <?php
+        if (isset($_POST['submit'])) {
+          echo '$("table").show();' . "\n";
+          echo '$("#fName").html("File <strong>' . $_FILES['inputFile']['name'] . '</strong> successfully loaded with the following data");' . "\n";
+          echo '$("#fName").show();' . "\n";
+          echo '$("#formInputString").show();' . "\n";
+          echo '$("#outputDFA").show();' . "\n";
+        } else {
+          echo '$("table").hide();' . "\n";
+          echo '$("#fName").hide();' . "\n";
+          echo '$("#formInputString").hide();' . "\n";
+          echo '$("#outputDFA").hide();' . "\n";
+        }
+        ?>
+
+  		  $('#inputString').on('input', function() {
+    			$(this).val($(this).val().replace(/[^0-1]/g,''));
+
+    			$.ajax({
+    			  type	   : 'get',
+    			  url		   : 'act_ajax.php',
+    			  data     : 'input=' + $('#inputString').val(),
+    			  dataType : 'json',
+    			  success	 : function(response) {
+      				var output = $('#outputDFA');
+
+      				output.html("<strong>" + response['output'] + "</strong>");
+      				output.show();
+      				$('tr').removeClass('cur_state');
+      				$('#s' + response['cur_state']).addClass('cur_state');
+
+      				if ($('#inputString').val().length == 0)
+      				  output.html('Type the input string on the textbox above');
+      				else {
+      				  var sequence = "<br />Sequences: " + response['sequence'];
+      				  output.append(sequence);
+      				}
+    			  }
+    			});
         });
       });
     </script>
